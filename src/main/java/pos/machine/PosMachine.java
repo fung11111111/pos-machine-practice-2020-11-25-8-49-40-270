@@ -22,7 +22,6 @@ public class PosMachine {
                 if (barcode.equals(item.getBarcode())) {
                     ItemReceipt itemReceipt = new ItemReceipt(item.getBarcode(), item.getName(), item.getPrice());
                     if (!isItemInList(itemReceipt)) {
-                        itemReceipt.addItem();
                         itemReceiptArrayList.add(itemReceipt);
                     }
                 }

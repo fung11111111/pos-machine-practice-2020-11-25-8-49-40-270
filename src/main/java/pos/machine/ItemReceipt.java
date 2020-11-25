@@ -5,8 +5,8 @@ public class ItemReceipt extends ItemInfo{
     private int subCharge;
     public ItemReceipt(String barcode, String name, int price) {
         super(barcode, name, price);
-        count = 0;
-        subCharge = 0;
+        count = 1;
+        subCharge = getCount() * getPrice();
     }
     public void addItem(){
         count ++;
