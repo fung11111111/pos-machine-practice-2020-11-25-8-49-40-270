@@ -21,11 +21,9 @@ public class PosMachine {
             for (ItemInfo item : itemList) {
                 if (barcode.equals(item.getBarcode())) {
                     ItemReceipt itemReceipt = new ItemReceipt(item.getBarcode(), item.getName(), item.getPrice());
-                    if (isItemInList(itemReceipt)) {
+                    if (!isItemInList(itemReceipt)) {
                         itemReceipt.addItem();
-                    } else {
                         itemReceiptArrayList.add(itemReceipt);
-                        itemReceipt.addItem();
                     }
                 }
             }
@@ -35,7 +33,7 @@ public class PosMachine {
         String header = "***<store earning no money>Receipt***\n";
         String divider = "----------------------\n";
         String footer = "**********************";
-        return header + receipt + divider + footer;
+        return header + receipt + divider + getTotalCharge() + footer;
     }
     private String concatReceipt(){
         String receipt = "";
@@ -49,10 +47,18 @@ public class PosMachine {
         for(ItemReceipt ir: itemReceiptArrayList){
             if(ir.getBarcode().equals(itemReceipt.getBarcode())){
                 inList = true;
+                ir.addItem();
                 break;
             }
         }
         return inList;
+    }
+    private String getTotalCharge(){
+        int total = 0;
+        for(ItemReceipt ir: itemReceiptArrayList){
+            total += ir.getSubCharge();
+        }
+        return String.format("Total: %s (yuan)\n", total);
     }
 
     private List<ItemInfo> getItemList() {
