@@ -19,10 +19,9 @@ public class PosMachine {
         List<ItemInfo> itemList = getItemList();
         for (String barcode : barcodes) {
             for (ItemInfo item : itemList) {
-                if (barcode.equals(item.getBarcode())) {
-                    ItemReceipt itemReceipt = new ItemReceipt(item.getBarcode(), item.getName(), item.getPrice());
-                    if (!isItemInList(itemReceipt)) {
-                        itemReceiptArrayList.add(itemReceipt);
+                if (barcode.equals(item.getBarcode())) { ;
+                    if (!isItemInList(item.getBarcode())) {
+                        itemReceiptArrayList.add(new ItemReceipt(item.getBarcode(), item.getName(), item.getPrice()));
                     }
                 }
             }
@@ -41,10 +40,10 @@ public class PosMachine {
         }
         return receipt;
     }
-    private Boolean isItemInList(ItemReceipt itemReceipt){
+    private Boolean isItemInList(String itemCode){
         Boolean inList = false;
         for(ItemReceipt ir: itemReceiptArrayList){
-            if(ir.getBarcode().equals(itemReceipt.getBarcode())){
+            if(ir.getBarcode().equals(itemCode)){
                 inList = true;
                 ir.addItem();
                 break;
