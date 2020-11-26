@@ -11,15 +11,16 @@ public class PosMachine {
     }
 
     public String printReceipt(List<String> barcodes) {
+        clearOldReceipt();
         createItemByBarcodes(barcodes);
         return generateFinalReceipt(concatReceipt());
     }
-
+  // cna use map tp add itemReceipt
     private void createItemByBarcodes(List<String> barcodes) {
         List<ItemInfo> itemList = getItemList();
         for (String barcode : barcodes) {
             for (ItemInfo item : itemList) {
-                if (barcode.equals(item.getBarcode())) { ;
+                if (barcode.equals(item.getBarcode())) {
                     if (!isItemInList(item.getBarcode())) {
                         itemReceiptArrayList.add(new ItemReceipt(item.getBarcode(), item.getName(), item.getPrice()));
                     }
@@ -27,23 +28,26 @@ public class PosMachine {
             }
         }
     }
+
     private String generateFinalReceipt(String receipt) {
         String header = "***<store earning no money>Receipt***\n";
         String divider = "----------------------\n";
         String footer = "**********************";
         return header + receipt + divider + getTotalCharge() + footer;
     }
-    private String concatReceipt(){
+
+    private String concatReceipt() {
         String receipt = "";
-        for (ItemReceipt ir: itemReceiptArrayList){
+        for (ItemReceipt ir : itemReceiptArrayList) {
             receipt += ir.getItemReceipt();
         }
         return receipt;
     }
-    private Boolean isItemInList(String itemCode){
+// can use anymatch
+    private Boolean isItemInList(String itemCode) {
         Boolean inList = false;
-        for(ItemReceipt ir: itemReceiptArrayList){
-            if(ir.getBarcode().equals(itemCode)){
+        for (ItemReceipt ir : itemReceiptArrayList) {
+            if (ir.getBarcode().equals(itemCode)) {
                 inList = true;
                 ir.addItem();
                 break;
@@ -51,12 +55,17 @@ public class PosMachine {
         }
         return inList;
     }
-    private String getTotalCharge(){
+// use reduce
+    private String getTotalCharge() {
         int total = 0;
-        for(ItemReceipt ir: itemReceiptArrayList){
+        for (ItemReceipt ir : itemReceiptArrayList) {
             total += ir.getSubCharge();
         }
         return String.format("Total: %s (yuan)\n", total);
+    }
+
+    private void clearOldReceipt() {
+        this.itemReceiptArrayList.clear();
     }
 
     private List<ItemInfo> getItemList() {
